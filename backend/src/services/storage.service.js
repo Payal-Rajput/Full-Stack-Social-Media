@@ -8,22 +8,18 @@ var imagekit=new Imagekit({
 });
 
 
-export async function uploadFile(file, filename){
-    return new Promise((resolve,reject)=>{
+export async function uploadFile(file,filename) {
+    return new Promise((resolve, reject) => {
         imagekit.upload({
-            file:file.buffer,
-            fileName:filename,
-            folder:"social-media-application"
-        }),
-        function(error,result){
-
-            if(error){
-                reject(error)
+            file: file.buffer, // required
+            fileName: filename, // required
+            folder: "n22-social-application" // optional
+        }, function(error, result) {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(result);
             }
-            else{
-                resolve(result)
-            }
-        }
-    })
-
+        });
+    });
 }

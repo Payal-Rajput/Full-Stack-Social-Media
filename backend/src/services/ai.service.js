@@ -13,7 +13,7 @@ export async function generateCaption(file){
     const contents = [
       {
         inlineData: {
-          mimeType: file.mimeType,
+          mimeType: file.mimetype,
           data: base64Image,
         },
       },
@@ -23,6 +23,15 @@ export async function generateCaption(file){
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: contents,
+      config:{
+        systemInstruction:`
+        Keep captions short and punchy (under 20 words for social media).
+        Use simple, relatable language.
+        use hashtag and emojis.
+
+        You have to analyse the image and generate  a caption in simple text format.
+        `
+      }
     });
 
     // console.log(response.text);

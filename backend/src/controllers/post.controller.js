@@ -2,8 +2,11 @@ import postModel from '../models/post.model.js';
 import { uploadFile } from '../services/storage.service.js';
 import { generateCaption } from '../services/ai.service.js';
 import {v4 as uuidv4} from 'uuid';
+import { createPost } from '../dao/post.dao.js';
 
-export async function createPost(req,res){
+
+
+export async function createPostController(req,res){
     const {mentions} =req.body;
 
   
@@ -12,11 +15,21 @@ export async function createPost(req,res){
         generateCaption(req.file)
     ])
 
-    console.log(req.user);
-    
-    
+    const post=await createPost({
+        mentions,
+        url:file.url,
+        caption,
+        user:req.user._id
+    })
 
-
-    
-
+    res.status(201).json({
+        message:"post created successfully",
+        post
+    })
 }
+    
+    
+
+
+    
+

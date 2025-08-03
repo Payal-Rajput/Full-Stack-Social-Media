@@ -11,3 +11,13 @@ export async function createPost(data){
         mentions
     })
 }
+
+export async function getPosts(skip,limit){
+    const posts = await postModel
+    .find()
+    .sort({createdAt:-1})
+    .skip(skip)
+    .limit(limit)
+
+    return posts;
+}

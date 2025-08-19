@@ -1,6 +1,7 @@
 import {Server} from "socket.io";
 import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
+import { createMessage } from "../dao/message.dao.js";
 
 const users={};
 
@@ -36,9 +37,15 @@ function setupSocket(server){
             console.log("a user disconnected");  
         })
 
-        socket.on("message",(msg)=>{
+        socket.on("message",async (msg)=>{
             const {receiver  /* mongodb id  */, message}=msg;
-            socket.to(users[receiver]).emit("message",msg);
+            socket.to(users[receiver]).emit("message",message)
+
+             await createMessage({
+                receiver,
+                sender: socket.user._id,
+                text: message
+            })
             console.log(msg);
         })
     })
